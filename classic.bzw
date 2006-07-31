@@ -1,0 +1,1004 @@
+# BattleZone Classic.
+# Rocco Caputo <rcaputo@cpan.org>.
+
+options
+	# Disable mountains.  This map has its own.
+	# Disable shadows.  Can't seem to disable sun/moonlight.
+	# Disable celestial.  Can't disable sun/moon and leave stars.
+	# Disable clouds.
+	# Black sky.  Always night in classic BattleZone.
+	# Get rid of the wall.  No wall in classic.
+	# Classic had bouncing shots.
+	# Enable jumping... against better judgment. :)
+	-setforced _drawMountains 0
+	-setforced _noShadows 1
+	-setforced _drawCelestial 0
+	-setforced _drawClouds 0
+	-setforced _skyColor black
+	-setforced _wallHeight 0
+	-b
+	+r
+	-j
+	-advertise NONE
+	-a 50 38
+	-ms 2
+end
+
+# Not used.
+dynamicColor
+	name LinkMaterial
+	red limits 0 0.25
+	red sinusoid 2 0 1
+	green limits 0 0.25
+	green sinusoid 2 0.666667 1
+	blue limits 0 0.25
+	blue sinusoid 2 1.33333 1
+	alpha limits 0.75 0.75
+end
+
+# Not used.
+textureMatrix
+	name LinkMaterial
+	shift 0 -0.05
+end
+
+# Not used.
+material
+	name LinkMaterial
+	dyncol LinkMaterial
+	diffuse 0 0 0 0.5
+	nolighting
+	addtexture telelink
+		texmat LinkMaterial
+end
+
+# Black ground.
+material
+	name GroundMaterial
+	color 0.0 0.0 0.0 1.0
+end
+
+# Bright green vectors.
+# 
+# When using vectors, be sure that they are set shootthrough and
+# drivethrough.  Otherwise they'll act as obstacles for tanks and
+# they'll reflect shots at odd angles.
+
+material
+	name      mat_vector
+	color     0.0 1.0 0.0 1.0
+	ambient   0.0 1.0 0.0 1.0
+	emission  0.0 1.0 0.0 1.0
+end
+
+# Translucent faces.
+# 
+# These are solid to tanks and shots.  The faces are the substance of
+# things.
+material
+	name      mat_face
+	color     0.0 0.0 0.0 0.5
+	ambient   0.0 0.0 0.0 0.5
+	emission  0.0 0.0 0.0 0.5
+end
+
+# There is no dark side of the moon, really.  Nasty artifacts arise if
+# emission (and possibly diffuse) are 0.0, so the dark side has a
+# little bit of presence.  The effect of a perfectly black dark side
+# is awesome, though.
+material
+	name      mat_moon_dark
+	color     0.0 1.0 0.0 1.0
+	ambient   0.0 0.05 0.0 1.0
+	emission  0.0 0.05 0.0 1.0
+	diffuse   0.0 0.05 0.0 1.0
+end
+
+# Bright green light side.
+material
+	name      mat_moon_light
+	color     0.0 1.0 0.0 1.0
+	ambient   0.0 0.5 0.0 1.0
+	emission  0.0 0.5 0.0 1.0
+	diffuse   0.0 1.0 0.0 1.0
+end
+
+# The moon is two hemispheres: A dark one and a light one.
+# TODO - Remake the moon as a mesh, with a light and a dark side, and
+# add craters to match the original moon.
+define grp_moon
+	sphere
+		position  0.0 0.0 0.0
+		radius    1.00
+		hemi
+		matref    mat_moon_dark
+		spin 90 1 0 0
+		spin 270 0 0 1
+	end
+
+	sphere
+		position  0.0 0.0 0.0
+		radius    1.00
+		hemi
+		matref    mat_moon_light
+		spin 90 1 0 0
+		spin 90 0 0 1
+	end
+enddef
+
+# Various types of mountains.  Each mountain is 179 units wide, 1 unit
+# deep, and as tall as necessary.  20 of them circumscribe a 570-unit
+# radius circle.  Five mountain types would be ideal, but currently
+# there are only four.
+
+# Smaller pair of peaks.
+define grp_mountain_1
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 50.0
+		spin      45 0 1 0
+		shift     -89.5 0.0 0.0
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 40.83
+		spin      -30 0 1 0
+		shift     -33.72 0.0 0.0
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 70.72
+		spin      -60 0 1 0
+		shift     6.66 0.0 0.0
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 72
+		spin      -45 0 1 0
+		shift     67.5 0.0 0.0
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 51
+		spin      45 0 1 0
+		shift     -18.5 0.0 15
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 60
+		spin      -60 0 1 0
+		shift     89.5 0.0 0.0
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 179
+		spin      90 0 1 0
+		shift     -89.5 0.0 0.0
+	end
+enddef
+
+# Tall mountain with snowy peak.
+define grp_mountain_2
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 68.56
+		spin      50 0 1 0
+		shift     -89.5 0.0 0.0
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 58
+		spin      40 0 1 0
+		shift     -36.98 0.0 44.07
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 37.5
+		spin      100 0 1 0
+		shift     -36.98 0.0 44.07
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 37.5
+		spin      -100 0 1 0
+		shift     36.98 0.0 44.07
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 58
+		spin      -40 0 1 0
+		shift     36.98 0.0 44.07
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 68.56
+		spin      -50 0 1 0
+		shift     89.5 0.0 0.0
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 179
+		spin      90 0 1 0
+		shift     -89.5 0.0 0.0
+	end
+enddef
+
+# No mountain.
+define grp_mountain_3
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 179
+		spin      90 0 1 0
+		shift     -89.5 0.0 0.0
+	end
+enddef
+
+# This one's the volcano.
+define grp_mountain_4
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 90
+		spin      50 0 1 0
+		shift     -89.5 0.0 0.0
+	end
+
+	# Next two arcs are the caldera.
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 10.3
+		spin      110 0 1 0
+		shift     -20.6 0.0 57.9
+	end
+
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 10.3
+		spin      -110 0 1 0
+		shift     -1.0 0.0 57.9
+	end
+
+	# slope
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 90
+		spin      -50 0 1 0
+		shift     67.5 0.0 0.0
+	end
+
+	# ground
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      1.0 1.0 179
+		spin      90 0 1 0
+		shift     -89.5 0.0 0.0
+	end
+
+	# ejecta
+	sphere
+		position  -40 0.0 50.0
+		radius    1
+		matref    mat_vector
+	end
+	sphere
+		position  0.0 0.0 65.0
+		radius    1
+		matref    mat_vector
+	end
+	sphere
+		position  20 0.0 70.0
+		radius    1
+		matref    mat_vector
+	end
+	sphere
+		position  -9.6 0.0 60.0
+		radius    1
+		matref    mat_vector
+	end
+	sphere
+		position  -30 0.0 80.0
+		radius    1
+		matref    mat_vector
+	end
+	sphere
+		position  -20 0.0 65.0
+		radius    1
+		matref    mat_vector
+	end
+enddef
+
+# Place the mountains around the map.
+
+group grp_mountain_1
+	size 1 1 1
+	position 0.0 570.0 0.0
+end
+group grp_mountain_2
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 18 0 0 1
+end
+group grp_mountain_3
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 36 0 0 1
+end
+group grp_mountain_4
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 54 0 0 1
+end
+group grp_mountain_1
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 72 0 0 1
+end
+group grp_mountain_2
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 90 0 0 1
+end
+group grp_mountain_3
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 108 0 0 1
+end
+group grp_mountain_4
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 126 0 0 1
+end
+group grp_mountain_1
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 144 0 0 1
+end
+group grp_mountain_2
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 162 0 0 1
+end
+group grp_mountain_3
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 180 0 0 1
+end
+group grp_mountain_4
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 198 0 0 1
+end
+group grp_mountain_1
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 216 0 0 1
+end
+group grp_mountain_2
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 234 0 0 1
+end
+group grp_mountain_3
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 252 0 0 1
+end
+group grp_mountain_4
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 270 0 0 1
+end
+group grp_mountain_1
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 288 0 0 1
+end
+group grp_mountain_2
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 306 0 0 1
+end
+group grp_mountain_3
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 324 0 0 1
+end
+group grp_mountain_4
+	size 1 1 1
+	position 0.0 570.0 0.0
+	spin 342 0 0 1
+end
+
+# Place the moon.
+# I'm seriously cheating here.  The mountains are unfilled outlines.
+# It's very important to place the moon over the flat "mountain" so
+# that you don't see it shining through the outline.
+
+group grp_moon
+	size 20 20 20
+	position 350 500 50
+end
+
+### Define the archetypical pyramid.
+
+define grp_pyramid
+	# w base
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 -1 0 0
+		shift     0.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# e base
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 -1 0 0
+		shift     1.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# n base
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 0 1 0
+		shift     0.0 1.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# s base
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 0 1 0
+		shift     0.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# nw corner
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      45 1 1 0
+		shift     0.0 1.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# se corner
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      -45 1 1 0
+		shift     1.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# ne corner
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      45 1 -1 0
+		shift     1.0 1.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# sw corner
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      -45 1 -1 0
+		shift     0.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	mesh
+		name    pyr_faces
+		vertex  0.0  0.0 0.0 # 0
+		vertex  0.0  1.0 0.0 # 1
+		vertex  1.0  1.0 0.0 # 2
+		vertex  1.0  0.0 0.0 # 3
+		vertex  0.5  0.5 0.7 # 4
+		matref  mat_face
+
+		face
+			vertices 0 1 2 3
+		endface
+
+		face
+			vertices 0 4 1
+		endface
+
+		face
+			vertices 1 4 2
+		endface
+
+		face
+			vertices 2 4 3
+		endface
+
+		face
+			vertices 3 4 0
+		endface
+	end
+enddef
+
+# Define the archetypical box.
+
+define grp_box
+	# sw corner
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		shift     0.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# nw corner
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		shift     0.0 1.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# ne corner
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		shift     1.0 1.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# se corner
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		shift     1.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# w bottom
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 -1 0 0
+		shift     0.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# e bottom
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 -1 0 0
+		shift     1.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# n bottom
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 0 1 0
+		shift     0.0 1.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# s bottom
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 0 1 0
+		shift     0.0 0.0 0.0
+		shootthrough
+		drivethrough
+	end
+
+	# w top
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 -1 0 0
+		shift     0.0 0.0 1.0
+		shootthrough
+		drivethrough
+	end
+
+	# e top
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 -1 0 0
+		shift     1.0 0.0 1.0
+		shootthrough
+		drivethrough
+	end
+
+	# n top
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 0 1 0
+		shift     0.0 1.0 1.0
+		shootthrough
+		drivethrough
+	end
+
+	# s top
+	arc
+		divisions 8
+		angle     360
+		ratio     1
+		matref    mat_vector
+		size      0.01 0.01 1.0
+		spin      90 0 1 0
+		shift     0.0 0.0 1.0
+		shootthrough
+		drivethrough
+	end
+
+	mesh
+		name    box_faces
+		vertex  0.0  0.0 0.0 # 0
+		vertex  0.0  1.0 0.0 # 1
+		vertex  1.0  1.0 0.0 # 2
+		vertex  1.0  0.0 0.0 # 3
+		vertex  0.0  0.0 1.0 # 4
+		vertex  0.0  1.0 1.0 # 5
+		vertex  1.0  1.0 1.0 # 6
+		vertex  1.0  0.0 1.0 # 7
+		matref  mat_face
+
+		face
+			vertices 0 1 2 3
+		endface
+
+		face
+			vertices 7 6 5 4
+		endface
+
+		face
+			vertices 0 4 5 1
+		endface
+
+		face
+			vertices 1 5 6 2
+		endface
+
+		face
+			vertices 2 6 7 3
+		endface
+
+		face
+			vertices 3 7 4 0
+		endface
+	end
+enddef
+
+# Fill the map with boxes and pyramids.  I cheated here, too.  This
+# map is a default version, with s/^box$/group grp_box/ and
+# s/^pyramid/group grp_pyramid/.
+
+group grp_box
+	position -124.615 -10.2478 0
+	size 30 30 9.42
+	rotation 74.4279
+end
+group grp_box
+	position 200 -208.06 0
+	size 30 30 9.42
+	rotation 154.074
+end
+group grp_box
+	position -322.361 -317.906 0
+	size 30 30 9.42
+	rotation 250.335
+end
+group grp_box
+	position -284.17 -46.5458 0
+	size 30 30 9.42
+	rotation 227.302
+end
+group grp_box
+	position 260.561 53.2557 0
+	size 30 30 9.42
+	rotation 121.302
+end
+group grp_box
+	position -294.98 -128.113 0
+	size 30 30 9.42
+	rotation 358.938
+end
+group grp_box
+	position -54.7918 -85.2591 0
+	size 30 30 9.42
+	rotation 112.664
+end
+group grp_box
+	position 272.408 -41.4371 0
+	size 30 30 9.42
+	rotation 344.639
+end
+group grp_box
+	position 272.943 161.461 0
+	size 30 30 9.42
+	rotation 212.334
+end
+group grp_box
+	position -363.502 217.336 0
+	size 30 30 9.42
+	rotation 165.935
+end
+group grp_box
+	position 294.556 194.253 0
+	size 30 30 9.42
+	rotation 181.738
+end
+group grp_box
+	position 113.926 351.609 0
+	size 30 30 9.42
+	rotation 129.806
+end
+group grp_box
+	position -274.093 -278.956 0
+	size 30 30 9.42
+	rotation 352.294
+end
+group grp_box
+	position -215.606 308.803 0
+	size 30 30 9.42
+	rotation 21.8167
+end
+group grp_pyramid
+	position 253.202 371.834 0
+	size 8.2 8.2 10.25
+	rotation 94.6872
+end
+group grp_pyramid
+	position 4.31929 -205.839 0
+	size 8.2 8.2 10.25
+	rotation 29.7773
+end
+group grp_pyramid
+	position -251.922 342.567 0
+	size 8.2 8.2 10.25
+	rotation 147.87
+end
+group grp_pyramid
+	position -36.7238 383.534 0
+	size 8.2 8.2 10.25
+	rotation 28.655
+end
+group grp_pyramid
+	position 231.828 339.888 0
+	size 8.2 8.2 10.25
+	rotation 45.4211
+end
+group grp_pyramid
+	position 28.9243 -269.115 0
+	size 8.2 8.2 10.25
+	rotation 262.98
+end
+group grp_pyramid
+	position -6.44388 -302.503 0
+	size 8.2 8.2 10.25
+	rotation 103.885
+end
+group grp_pyramid
+	position 388.246 -357.677 0
+	size 8.2 8.2 10.25
+	rotation 55.1411
+end
+group grp_pyramid
+	position -140.123 155.953 0
+	size 8.2 8.2 10.25
+	rotation 316.264
+end
+group grp_pyramid
+	position -275.614 -236.735 0
+	size 8.2 8.2 10.25
+	rotation 356.569
+end
+group grp_pyramid
+	position -173.375 -315.634 0
+	size 8.2 8.2 10.25
+	rotation 152.412
+end
+group grp_pyramid
+	position 61.162 -49.2018 0
+	size 8.2 8.2 10.25
+	rotation 299.76
+end
+group grp_pyramid
+	position 113.689 378.844 0
+	size 8.2 8.2 10.25
+	rotation 190.581
+end
+group grp_pyramid
+	position -7.38721 -156.642 0
+	size 8.2 8.2 10.25
+	rotation 231.185
+end
+group grp_pyramid
+	position -301.264 -140.559 0
+	size 8.2 8.2 10.25
+	rotation 192.929
+end
+group grp_pyramid
+	position -320.896 296.188 0
+	size 8.2 8.2 10.25
+	rotation 16.1978
+end
+group grp_pyramid
+	position -229.276 158.276 0
+	size 8.2 8.2 10.25
+	rotation 246.75
+end
+group grp_pyramid
+	position 255.914 349.778 0
+	size 8.2 8.2 10.25
+	rotation 326.024
+end
+group grp_pyramid
+	position 230.741 -328.767 0
+	size 8.2 8.2 10.25
+	rotation 183.685
+end
+group grp_pyramid
+	position 39.2225 12.3435 0
+	size 8.2 8.2 10.25
+	rotation 295.683
+end
+group grp_pyramid
+	position -25.7631 -200.644 0
+	size 8.2 8.2 10.25
+	rotation 76.3719
+end
+
+# End.  Whee!
