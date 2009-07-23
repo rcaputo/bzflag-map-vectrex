@@ -1,5 +1,13 @@
-# BattleZone Classic.
+# BattleZone Vectrex.
 # Rocco Caputo <rcaputo@cpan.org>.
+# Copyright 2006.
+# License: Creative Commons Attribution-ShareAlike 2.5
+# More info: http://creativecommons.org/licenses/by-sa/2.5/
+
+world
+	name BattleZone Vectrex by lagamemnon
+	size 400.0
+end
 
 options
 	# Disable mountains.  This map has its own.
@@ -9,7 +17,7 @@ options
 	# Black sky.  Always night in classic BattleZone.
 	# Get rid of the wall.  No wall in classic.
 	# Classic had bouncing shots.
-	# Enable jumping... against better judgment. :)
+	# Enable jumping... even though original didn't have it. :)
 	-setforced _drawMountains 0
 	-setforced _noShadows 1
 	-setforced _drawCelestial 0
@@ -20,39 +28,11 @@ options
 	+r
 	-j
 	-advertise NONE
-	-a 50 38
+	#-a 50 38
 	-ms 2
 end
 
-# Not used.
-dynamicColor
-	name LinkMaterial
-	red limits 0 0.25
-	red sinusoid 2 0 1
-	green limits 0 0.25
-	green sinusoid 2 0.666667 1
-	blue limits 0 0.25
-	blue sinusoid 2 1.33333 1
-	alpha limits 0.75 0.75
-end
-
-# Not used.
-textureMatrix
-	name LinkMaterial
-	shift 0 -0.05
-end
-
-# Not used.
-material
-	name LinkMaterial
-	dyncol LinkMaterial
-	diffuse 0 0 0 0.5
-	nolighting
-	addtexture telelink
-		texmat LinkMaterial
-end
-
-# Black ground.
+# Black ground.  1.0 alpha = opaque.
 material
 	name GroundMaterial
 	color 0.0 0.0 0.0 1.0
@@ -382,101 +362,101 @@ enddef
 
 group grp_mountain_1
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 end
 group grp_mountain_2
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 18 0 0 1
 end
 group grp_mountain_3
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 36 0 0 1
 end
 group grp_mountain_4
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 54 0 0 1
 end
 group grp_mountain_1
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 72 0 0 1
 end
 group grp_mountain_2
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 90 0 0 1
 end
 group grp_mountain_3
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 108 0 0 1
 end
 group grp_mountain_4
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 126 0 0 1
 end
 group grp_mountain_1
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 144 0 0 1
 end
 group grp_mountain_2
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 162 0 0 1
 end
 group grp_mountain_3
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 180 0 0 1
 end
 group grp_mountain_4
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 198 0 0 1
 end
 group grp_mountain_1
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 216 0 0 1
 end
 group grp_mountain_2
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 234 0 0 1
 end
 group grp_mountain_3
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 252 0 0 1
 end
 group grp_mountain_4
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 270 0 0 1
 end
 group grp_mountain_1
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 288 0 0 1
 end
 group grp_mountain_2
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 306 0 0 1
 end
 group grp_mountain_3
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 324 0 0 1
 end
 group grp_mountain_4
 	size 1 1 1
-	position 0.0 570.0 0.0
+	shift 0.0 570.0 0.0
 	spin 342 0 0 1
 end
 
